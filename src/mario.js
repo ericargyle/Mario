@@ -14,47 +14,56 @@ const ASSET = {
 }
 
 function makePlaceholderTextures(scene) {
-  // Player
+  // Only generate placeholder textures if real assets were not provided.
+  const missing = (key) => !scene.textures.exists(key)
+
   const g = scene.add.graphics()
-  g.clear()
-  g.fillStyle(0x2dd4bf, 1)
-  g.fillRoundedRect(0, 0, 22, 28, 6)
-  g.fillStyle(0x0f172a, 0.35)
-  g.fillCircle(7, 10, 2)
-  g.fillCircle(15, 10, 2)
-  g.generateTexture(ASSET.player, 22, 28)
 
-  // Ground
-  g.clear()
-  g.fillStyle(0x1f2937, 1)
-  g.fillRect(0, 0, 64, 32)
-  g.fillStyle(0x334155, 1)
-  for (let i = 0; i < 6; i++) g.fillRect(i * 12, 0, 6, 32)
-  g.generateTexture(ASSET.ground, 64, 32)
+  if (missing(ASSET.player)) {
+    g.clear()
+    g.fillStyle(0x2dd4bf, 1)
+    g.fillRoundedRect(0, 0, 22, 28, 6)
+    g.fillStyle(0x0f172a, 0.35)
+    g.fillCircle(7, 10, 2)
+    g.fillCircle(15, 10, 2)
+    g.generateTexture(ASSET.player, 22, 28)
+  }
 
-  // Block
-  g.clear()
-  g.fillStyle(0x6b7280, 1)
-  g.fillRoundedRect(0, 0, 40, 24, 6)
-  g.lineStyle(2, 0x0b1020, 0.5)
-  g.strokeRoundedRect(1, 1, 38, 22, 6)
-  g.generateTexture(ASSET.block, 40, 24)
+  if (missing(ASSET.ground)) {
+    g.clear()
+    g.fillStyle(0x1f2937, 1)
+    g.fillRect(0, 0, 64, 32)
+    g.fillStyle(0x334155, 1)
+    for (let i = 0; i < 6; i++) g.fillRect(i * 12, 0, 6, 32)
+    g.generateTexture(ASSET.ground, 64, 32)
+  }
 
-  // Coin
-  g.clear()
-  g.fillStyle(0xfbbf24, 1)
-  g.fillCircle(10, 10, 10)
-  g.lineStyle(2, 0x92400e, 0.5)
-  g.strokeCircle(10, 10, 9)
-  g.generateTexture(ASSET.coin, 20, 20)
+  if (missing(ASSET.block)) {
+    g.clear()
+    g.fillStyle(0x6b7280, 1)
+    g.fillRoundedRect(0, 0, 40, 24, 6)
+    g.lineStyle(2, 0x0b1020, 0.5)
+    g.strokeRoundedRect(1, 1, 38, 22, 6)
+    g.generateTexture(ASSET.block, 40, 24)
+  }
 
-  // Flag
-  g.clear()
-  g.fillStyle(0xffffff, 0.9)
-  g.fillRect(0, 0, 6, 60)
-  g.fillStyle(0x22c55e, 1)
-  g.fillTriangle(6, 6, 36, 14, 6, 22)
-  g.generateTexture(ASSET.flag, 40, 60)
+  if (missing(ASSET.coin)) {
+    g.clear()
+    g.fillStyle(0xfbbf24, 1)
+    g.fillCircle(10, 10, 10)
+    g.lineStyle(2, 0x92400e, 0.5)
+    g.strokeCircle(10, 10, 9)
+    g.generateTexture(ASSET.coin, 20, 20)
+  }
+
+  if (missing(ASSET.flag)) {
+    g.clear()
+    g.fillStyle(0xffffff, 0.9)
+    g.fillRect(0, 0, 6, 60)
+    g.fillStyle(0x22c55e, 1)
+    g.fillTriangle(6, 6, 36, 14, 6, 22)
+    g.generateTexture(ASSET.flag, 40, 60)
+  }
 
   g.destroy()
 }
@@ -260,6 +269,12 @@ class GameScene extends Phaser.Scene {
     this.score = 0
   }
 
+  preload() {
+    // Drop-in asset override
+    // Put your sprite at: public/assets/player.png
+    this.load.image(ASSET.player, 'assets/player.png')
+  }
+
   init(data) {
     if (typeof data.levelIndex === 'number') this.levelIndex = data.levelIndex
     if (typeof data.score === 'number') this.score = data.score
@@ -408,6 +423,10 @@ class GameScene extends Phaser.Scene {
 class StartScene extends Phaser.Scene {
   constructor() {
     super('start')
+  }
+
+  preload() {
+    this.load.image(ASSET.player, 'assets/player.png')
   }
 
   create() {

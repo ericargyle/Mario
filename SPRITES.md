@@ -10,15 +10,16 @@ and then updating `src/mario.js` to load them.
 
 ## Suggested filenames
 
-- `public/assets/player.png`
-- `public/assets/ground.png`
-- `public/assets/block.png`
-- `public/assets/coin.png`
-- `public/assets/flag.png`
+- `public/assets/player.png` ✅ (wired up now)
+- `public/assets/ground.png` (not wired yet)
+- `public/assets/block.png` (not wired yet)
+- `public/assets/coin.png` (not wired yet)
+- `public/assets/flag.png` (not wired yet)
 
 ## Where to wire them in
 
-In `src/mario.js`, replace `makePlaceholderTextures(scene)` with `scene.load.image(...)` calls in a preload step.
+- Player is already wired: `public/assets/player.png`
+- Others: add `this.load.image(...)` in `preload()` and keep the same keys (`ground`, `block`, `coin`, `flag`).
 
 ## Audio
 
